@@ -6,6 +6,7 @@ open FiveNightsAtxMax_
 open FiveNightsAtxMax_.RenderBasics
 open Game
 open RenderBasics
+open Fable.Core.JS
 
 type GL = WebGLRenderingContext
 
@@ -76,6 +77,7 @@ let inline renderRoom (gs: gameState) rd =
         | Opening 0 -> ()
         | Closing n
         | Opening n ->
+            console.log n
             sprintf "img/door/%s%d.png" rl n
             |> fun d -> drawStillImage d rd (program rd)
         | _ -> ()      

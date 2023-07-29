@@ -90,8 +90,6 @@ let rec gameLoop gameState renderData draw dt =
     let gameState = camRight gameState
 
     let gameState = { gameState with time = dt / 1000. }
-
-    console.log gameState
     
     draw gameState renderData
 
