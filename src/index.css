@@ -1,0 +1,59 @@
+body {
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+    margin: 0;
+}
+
+#game-canvas {
+    width: 100vw;
+    height: 100vh;
+}
+
+#canvas-holder {
+    background-color: black;
+}
+
+body {
+    overflow: hidden;
+    /* Hide scrollbars */
+}
+
+.control-button {
+    color: white;
+    border-radius: 10px;
+    background-color: #021222b0;
+    border: 0;
+}
+
+.control-button:hover {
+    background-color: #122232b0;
+}
+
+
+#camera-left {
+    position: absolute;
+    top: calc(50vh - 120px);
+    left: calc(0 + 30px);
+    height: 240px;
+    width: 60px;
+}
+
+#camera-right {
+    position: absolute;
+    top: calc(50vh - 120px);
+    left: calc(100vw - 60px);
+    height: 240px;
+    width: 60px;
+}
+
+#camera-up {
+    position: absolute;
+    left: calc(50vw - 240px);
+    top: calc(100vh - 60px);
+    width: 480px;
+    height: 60px;
+}
