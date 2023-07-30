@@ -15,7 +15,9 @@ type doorStatus =
 type userControls =
     { mutable cameraSwitch: bool
       mutable cameraLeft: bool
-      mutable cameraRight: bool }
+      mutable cameraRight: bool
+      mutable lightLeft: bool
+      mutable lightRight: bool }
 
 type gameState =
     { pov: pointOfView
@@ -23,7 +25,9 @@ type gameState =
       rightDoor: doorStatus
       time: float
       tickNum: int
-      enemies: xmax list }
+      enemies: xmax list
+      leftLight: bool
+      rightLight: bool }
 
 let initGameState =
     { pov = CamLeftCorridor, InOffice
@@ -31,12 +35,16 @@ let initGameState =
       rightDoor = Open
       time = 0.
       tickNum = 0
-      enemies = initialxmaxes }
+      enemies = initialxmaxes
+      leftLight = false
+      rightLight = false }
 
 let globalControls =
     { cameraSwitch = false
       cameraLeft = false
-      cameraRight = false }
+      cameraRight = false
+      lightLeft = false
+      lightRight = false }
 
 let tickLen = 50.
 
@@ -92,6 +100,12 @@ let rec gameLoop gameState renderData draw dt =
         else
             id
 
+    let makeStepAll xmaxes =
+        if tick && gameState.tickNum % 10 = 0 then
+            List.map makeStep xmaxes
+        else
+            xmaxes
+
     let gameState =
         { gameState with
             leftDoor = doorTick gameState.leftDoor
@@ -101,16 +115,18 @@ let rec gameLoop gameState renderData draw dt =
     let gameState = camLeft gameState
     let gameState = camRight gameState
 
-    let makeStepAll xmaxes =
-        if tick && gameState.tickNum % 10 = 0 then List.map makeStep xmaxes else xmaxes
+    let gameState =
+        { gameState with
+            leftLight = globalControls.lightLeft
+            rightLight = globalControls.lightRight }
 
     let gameState =
         { gameState with
             enemies = makeStepAll gameState.enemies }
-        
+
     if tick && gameState.tickNum % 10 = 0 then
         List.iter printXmax gameState.enemies
-    
+
     let gameState =
         { gameState with
             time = dt / 1000.

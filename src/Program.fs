@@ -21,7 +21,7 @@ let gl: WebGLRenderingContext =
     unbox canvas.getContext "webgl"
 
 let textures =
-    [ "img/InOffice00.png"
+    [ "img/Office.png"
       "img/LeftCorridorOpen.png"
       "img/RightCorridorOpen.png"
       "img/LeftCorridorClosed.png"
@@ -43,7 +43,11 @@ let textures =
       "img/xmax/xMaxBossOffice.png"
       "img/xmax/xMaxLeftHall.png"
       "img/xmax/xMaxRightCorridor.png"
-      "img/xmax/xMaxLeftBackStage.png"]
+      "img/xmax/xMaxLeftBackStage.png"
+      "img/xmax/xMaxRightStage.png"
+      "img/xmax/xMaxLeftStage.png"
+      "img/xmax/xMaxRightHall.png"
+      "img/xmax/xMaxLeftCorridor.png" ]
     
 let inline setCanvasSize () =
     gl.canvas.width <- 1920

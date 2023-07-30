@@ -82,6 +82,10 @@ let inline renderRoom (gs: gameState) rd =
                 | LeftHall, CamLeftHall -> Some "img/xmax/xMaxLeftHall.png"
                 | RightCorridor, CamRightCorridor -> Some "img/xmax/xMaxRightCorridor.png"
                 | LeftBackStage, CamLeftBackStage -> Some "img/xmax/xMaxLeftBackStage.png"
+                | LeftStage, CamLeftHall -> Some "img/xmax/xMaxLeftStage.png"
+                | RightStage, CamRightHall -> Some "img/xmax/xMaxRightStage.png"
+                | LeftCorridor, CamLeftCorridor -> Some "img/xmax/xMaxLeftCorridor.png"
+                | RightHall, CamRightHall -> Some "img/xmax/xMaxRightHall.png"
                 | _ -> None
             match maxImage with
             | Some img ->
@@ -104,7 +108,7 @@ let inline renderRoom (gs: gameState) rd =
             |> fun d -> drawStillImage d rd (program rd)   
     
     let drawOffice =
-        drawStillImage "img/InOffice00.png" rd (program rd)
+        drawStillImage "img/Office.png" rd (program rd)
         drawDoor "LeftDoor" gs.leftDoor
         drawDoor "RightDoor" gs.rightDoor 
 
