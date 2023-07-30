@@ -21,7 +21,10 @@ let fragmentShader =
 
     void main(){
         vec4 color = texture2D(img0, texCoord);
-        gl_FragColor = color;
+        if (color.a == 1.)
+            gl_FragColor = color;
+        else
+            gl_FragColor = vec4(0.);
     }"""
     
 let staticFragmentShaders =
@@ -43,8 +46,10 @@ let staticFragmentShaders =
         vec2 uv = texCoord.xy;
         vec2 uv2 = fract(texCoord.xy * fract(sin(time * speed)));
         maxStrength = 0.1;
-        vec3 colour = vec3(random(uv2.xy)) * maxStrength;
-        vec3 background = vec3(texture2D(img0, uv));
-        
-        gl_FragColor = vec4(background + colour, 1.0);
+        vec3 color = vec3(random(uv2.xy)) * maxStrength;
+        vec4 background = texture2D(img0, uv);
+        if (background.a == 1.)
+            gl_FragColor = background + vec4(color, 1.0);
+        else
+            gl_FragColor = vec4(0.);
     }"""

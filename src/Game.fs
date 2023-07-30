@@ -2,8 +2,7 @@ module Game
 
 open CameraState
 open Browser
-open Browser.Types
-open Locations
+open Ai
 
 type doorStage = int
 
@@ -22,20 +21,27 @@ type gameState =
     { pov: pointOfView
       leftDoor: doorStatus
       rightDoor: doorStatus
-      time: float }
+      time: float
+      tickNum: int
+      enemies: xmax list }
 
 let initGameState =
     { pov = CamLeftCorridor, InOffice
       leftDoor = Open
       rightDoor = Open
-      time = 0. }
+      time = 0.
+      tickNum = 0
+      enemies = initialxmaxes }
 
 let globalControls =
     { cameraSwitch = false
       cameraLeft = false
       cameraRight = false }
 
+let tickLen = 50.
+
 let rec gameLoop gameState renderData draw dt =
+    let tick = gameState.tickNum < (int <| dt / tickLen)
 
     let inline switchCamera g =
         let c g =
@@ -54,8 +60,8 @@ let rec gameLoop gameState renderData draw dt =
 
         match gameState.pov, gameState.leftDoor, globalControls.cameraLeft with
         | _, _, false -> g
-        | (_, InOffice), Open, _ -> c { g with leftDoor = Closing 3 }
-        | (_, InOffice), Closed, _ -> c { g with leftDoor = Opening 0 }
+        | (_, InOffice), Open, _ -> c { g with leftDoor = Closing 0 }
+        | (_, InOffice), Closed, _ -> c { g with leftDoor = Opening 3 }
         | (l, InCameras), _, _ -> c { g with pov = (moveLeft l, InCameras) }
         | _, _, _ -> c g
 
@@ -67,18 +73,24 @@ let rec gameLoop gameState renderData draw dt =
 
         match gameState.pov, gameState.rightDoor, globalControls.cameraRight with
         | _, _, false -> g
-        | (_, InOffice), Open, _ -> c { g with rightDoor = Closing 3 }
-        | (_, InOffice), Closed, _ -> c { g with rightDoor = Opening 0 }
-        | (l, InCameras), _, _ -> { g with pov = (moveRight l, InCameras) } |> c
+        | (_, InOffice), Open, _ -> c { g with rightDoor = Closing 0 }
+        | (_, InOffice), Closed, _ -> c { g with rightDoor = Opening 3 }
+        | (l, InCameras), _, _ ->
+            { g with
+                pov = (moveRight l, InCameras) }
+            |> c
         | _, _, _ -> c g
 
     let doorTick =
-        function
-        | Opening x when x > 1 -> Opening(x - 1)
-        | Closing x when x < 3 -> Closing(x + 1)
-        | Opening _ -> Open
-        | Closing _ -> Closed
-        | e -> e
+        if tick then
+            function
+            | Opening x when x > 1 -> Opening(x - 1)
+            | Closing x when x < 3 -> Closing(x + 1)
+            | Opening _ -> Open
+            | Closing _ -> Closed
+            | e -> e
+        else
+            id
 
     let gameState =
         { gameState with
@@ -89,8 +101,21 @@ let rec gameLoop gameState renderData draw dt =
     let gameState = camLeft gameState
     let gameState = camRight gameState
 
-    let gameState = { gameState with time = dt / 1000. }
+    let makeStepAll xmaxes =
+        if tick && gameState.tickNum % 10 = 0 then List.map makeStep xmaxes else xmaxes
+
+    let gameState =
+        { gameState with
+            enemies = makeStepAll gameState.enemies }
+        
+    if tick && gameState.tickNum % 10 = 0 then
+        List.iter printXmax gameState.enemies
     
+    let gameState =
+        { gameState with
+            time = dt / 1000.
+            tickNum = int (dt / tickLen) }
+
     draw gameState renderData
 
     window.requestAnimationFrame (gameLoop gameState renderData draw) |> ignore
