@@ -73,7 +73,7 @@ let inline renderRoom (gs: gameState) rd =
 
         drawStillImage locationString rd (programWithStatic rd)
         
-        let drawMax m =
+        let inline drawMax m =
             let _, loc, _ = m
             let maxImage =
                 match loc, location with
@@ -94,7 +94,7 @@ let inline renderRoom (gs: gameState) rd =
         
         List.iter drawMax gs.enemies
 
-    let drawDoor rl =
+    let inline drawDoor rl =
         function
         | Open -> ()
         | Closing 0 -> ()
@@ -107,13 +107,28 @@ let inline renderRoom (gs: gameState) rd =
             sprintf "img/door/%s3.png" rl
             |> fun d -> drawStillImage d rd (program rd)   
     
-    let drawOffice =
+    let inline drawLight () =
+        if gs.leftLight then
+            drawStillImage "img/LeftLight.png" rd (program rd)
+        if gs.rightLight then
+            drawStillImage "img/RightLight.png" rd (program rd)
+            
+    let inline drawDoorMax m =
+        let _, l, _ = m
+        if gs.leftLight && l = LeftDoor then
+            drawStillImage "img/xmax/xMaxLeftDoor.png" rd (program rd)
+        if gs.rightLight && l = RightDoor then
+            drawStillImage "img/xmax/xMaxRightDoor.png" rd (program rd)
+    
+    let inline drawOffice () =
         drawStillImage "img/Office.png" rd (program rd)
+        drawLight ()
+        List.iter drawDoorMax gs.enemies
         drawDoor "LeftDoor" gs.leftDoor
         drawDoor "RightDoor" gs.rightDoor 
 
     match gs.pov with
-    | _, monitorStatus.InOffice -> drawOffice
+    | _, monitorStatus.InOffice -> drawOffice ()
     | location, _ -> drawRoom location
 
 let inline updateUniforms (gameState: gameState) (rd: renderData) =

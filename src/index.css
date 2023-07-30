@@ -42,11 +42,27 @@ body {
     width: 60px;
 }
 
+#light-left {
+    position: absolute;
+    top: calc(50vh + 140px);
+    left: calc(0 + 30px);
+    height: 120px;
+    width: 60px;
+}
+
 #camera-right {
     position: absolute;
     top: calc(50vh - 120px);
     left: calc(100vw - 60px);
     height: 240px;
+    width: 60px;
+}
+
+#light-right {
+    position: absolute;
+    top: calc(50vh + 140px);
+    left: calc(100vw - 60px);
+    height: 120px;
     width: 60px;
 }
 

@@ -12,9 +12,14 @@ let inline bindButtons () =
     let camSwitch = document.getElementById "camera-up"
     let camLeft = document.getElementById "camera-left"
     let camRight = document.getElementById "camera-right"
+    let lightLeft = document.getElementById "light-left"
+    let lightRight = document.getElementById "light-right"
     camSwitch.onclick <- fun _ -> globalControls.cameraSwitch <- true
     camRight.onclick <- fun _ -> globalControls.cameraRight <- true
     camLeft.onclick <- fun _ -> globalControls.cameraLeft <- true
+    lightLeft.onclick <- fun _ -> globalControls.lightLeft <- not globalControls.lightLeft
+    lightRight.onclick <- fun _ -> globalControls.lightRight <- not globalControls.lightRight
+    
     
 let gl: WebGLRenderingContext =
     let canvas: Types.HTMLCanvasElement = unbox document.getElementById "game-canvas"
@@ -22,6 +27,8 @@ let gl: WebGLRenderingContext =
 
 let textures =
     [ "img/Office.png"
+      "img/LeftLight.png"
+      "img/RightLight.png"
       "img/LeftCorridorOpen.png"
       "img/RightCorridorOpen.png"
       "img/LeftCorridorClosed.png"
@@ -47,7 +54,9 @@ let textures =
       "img/xmax/xMaxRightStage.png"
       "img/xmax/xMaxLeftStage.png"
       "img/xmax/xMaxRightHall.png"
-      "img/xmax/xMaxLeftCorridor.png" ]
+      "img/xmax/xMaxLeftCorridor.png"
+      "img/xmax/xMaxLeftDoor.png"
+      "img/xmax/xMaxRightDoor.png" ]
     
 let inline setCanvasSize () =
     gl.canvas.width <- 1920
