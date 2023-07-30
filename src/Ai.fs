@@ -7,7 +7,7 @@ type xmaxtype =
     | One
     | Two
 
-let getNextRooms =
+let getNextRooms leftDoor rightDoor =
     function
     | LeftCorridor -> [ Kitchen; LeftDoor ]
     | RightCorridor -> [ Kitchen; RightDoor; BossOffice ]
@@ -21,8 +21,8 @@ let getNextRooms =
     | LeftBackStage -> [ LeftStage ]
     | RightStage -> [ RightHall ]
     | LeftStage -> [ LeftHall ]
-    | RightDoor -> [ SecurityOffice ]
-    | LeftDoor -> [ SecurityOffice ]
+    | RightDoor -> [ if not rightDoor then SecurityOffice else CenterBackStage ]
+    | LeftDoor -> [ if not leftDoor then SecurityOffice else CenterBackStage ]
     | Vent -> [ SecurityOffice ]
     | SecurityOffice -> [ SecurityOffice ]
 
@@ -45,25 +45,34 @@ let getLocationDuration =
     | Vent -> 150
     | SecurityOffice -> 1000
 
-type xmax = xmaxtype * location * int
+type xmax =
+    { t: xmaxtype
+      location: location
+      dur: int }
 
-let makeStep (xmaxloc: xmax) : xmax =
+let makeStep (xmaxloc: xmax) (leftClosed: bool) (rightClosed: bool) : xmax =
     let rand = Random()
 
     let pickRandom lst =
         List.item (rand.Next() % (List.length lst)) lst
 
-    let mtype, loc, dur = xmaxloc
-
-    match dur with
+    match xmaxloc.dur with
     | 0 ->
-        let newLoc = getNextRooms loc |> pickRandom
+        let newLoc = getNextRooms leftClosed rightClosed xmaxloc.location |> pickRandom
         let newDur = getLocationDuration newLoc
-        mtype, newLoc, newDur
-    | n -> mtype, loc, n - 1
+
+        { xmaxloc with
+            location = newLoc
+            dur = newDur }
+    | n -> { xmaxloc with dur = n - 1 }
 
 let printXmax xmax =
-    let t, loc, dur = xmax
-    printfn "%s %s [%d]" (string t) (string loc) dur
+    printfn "%s" (string xmax)
 
-let initialxmaxes = [ One, RightStage, 30; Two, LeftStage, 20 ]
+let initialxmaxes =
+    [ { t = One
+        location = RightStage
+        dur = 30 }
+      { t = Two
+        location = LeftStage
+        dur = 20 } ]

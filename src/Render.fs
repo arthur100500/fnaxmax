@@ -1,5 +1,6 @@
 module Render
 
+open Ai
 open Browser.Types
 open CameraState
 open FiveNightsAtxMax_.RenderBasics
@@ -73,8 +74,8 @@ let inline renderRoom (gs: gameState) rd =
 
         drawStillImage locationString rd (programWithStatic rd)
         
-        let inline drawMax m =
-            let _, loc, _ = m
+        let inline drawMax (m: xmax) =
+            let loc = m.location
             let maxImage =
                 match loc, location with
                 | Kitchen, CamKitchen -> Some "img/xmax/xMaxKitchen.png"
@@ -113,8 +114,8 @@ let inline renderRoom (gs: gameState) rd =
         if gs.rightLight then
             drawStillImage "img/RightLight.png" rd (program rd)
             
-    let inline drawDoorMax m =
-        let _, l, _ = m
+    let inline drawDoorMax (m: xmax) =
+        let l = m.location
         if gs.leftLight && l = LeftDoor then
             drawStillImage "img/xmax/xMaxLeftDoor.png" rd (program rd)
         if gs.rightLight && l = RightDoor then

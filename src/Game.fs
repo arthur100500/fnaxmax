@@ -102,7 +102,7 @@ let rec gameLoop gameState renderData draw dt =
 
     let makeStepAll xmaxes =
         if tick && gameState.tickNum % 10 = 0 then
-            List.map makeStep xmaxes
+            List.map (fun x -> makeStep x (gameState.leftDoor = Closed) (gameState.rightDoor = Closed)) xmaxes
         else
             xmaxes
 
