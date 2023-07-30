@@ -56,7 +56,8 @@ let textures =
       "img/xmax/xMaxRightHall.png"
       "img/xmax/xMaxLeftCorridor.png"
       "img/xmax/xMaxLeftDoor.png"
-      "img/xmax/xMaxRightDoor.png" ]
+      "img/xmax/xMaxRightDoor.png"
+      "img/xmax/xMaxEntryRoom.png" ]
     
 let inline setCanvasSize () =
     gl.canvas.width <- 1920
