@@ -88,6 +88,7 @@ let inline renderRoom (gs: gameState) rd =
                 | LeftCorridor, CamLeftCorridor -> Some "img/xmax/xMaxLeftCorridor.png"
                 | RightHall, CamRightHall -> Some "img/xmax/xMaxRightHall.png"
                 | EntryRoom, CamEntryRoom -> Some "img/xmax/xMaxEntryRoom.png"
+                | RightBackStage, CamRightBackStage -> Some "img/xmax/xMaxRightBackStage.png"
                 | _ -> None
             match maxImage with
             | Some img ->
@@ -121,13 +122,20 @@ let inline renderRoom (gs: gameState) rd =
             drawStillImage "img/xmax/xMaxLeftDoor.png" rd (program rd)
         if gs.rightLight && l = RightDoor then
             drawStillImage "img/xmax/xMaxRightDoor.png" rd (program rd)
+            
+    let inline drawScreamer (m: xmax) =
+        match m.location with
+        | SecurityOffice ->
+            drawStillImage "img/xmax/xMaxStare.png" rd (program rd)
+        | _ -> ()
     
     let inline drawOffice () =
         drawStillImage "img/Office.png" rd (program rd)
         drawLight ()
         List.iter drawDoorMax gs.enemies
         drawDoor "LeftDoor" gs.leftDoor
-        drawDoor "RightDoor" gs.rightDoor 
+        drawDoor "RightDoor" gs.rightDoor
+        List.iter drawScreamer gs.enemies
 
     match gs.pov with
     | _, monitorStatus.InOffice -> drawOffice ()

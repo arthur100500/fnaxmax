@@ -9,22 +9,22 @@ type xmaxtype =
 
 let getNextRooms leftDoor rightDoor =
     function
-    | LeftCorridor -> [ Kitchen; LeftDoor ]
+    | RightDoor -> [ if not rightDoor then SecurityOffice else CenterBackStage ]
+    | LeftDoor -> [ if not leftDoor then SecurityOffice else CenterBackStage ]
+    | CenterBackStage -> [ RightBackStage; LeftBackStage ]
     | RightCorridor -> [ Kitchen; RightDoor; BossOffice ]
+    | Kitchen -> [ RightCorridor; LeftCorridor ]
     | EntryRoom -> [ BossOffice; RightCorridor ]
-    | Kitchen -> [ Vent; RightCorridor; LeftCorridor ]
     | RightHall -> [ RightCorridor; EntryRoom ]
     | LeftHall -> [ RightHall; LeftCorridor ]
-    | CenterBackStage -> [ RightBackStage; LeftBackStage ]
-    | BossOffice -> [ RightDoor ]
+    | LeftCorridor -> [ Kitchen; LeftDoor ]
+    | SecurityOffice -> [ SecurityOffice ]
     | RightBackStage -> [ RightStage ]
     | LeftBackStage -> [ LeftStage ]
     | RightStage -> [ RightHall ]
-    | LeftStage -> [ LeftHall ]
-    | RightDoor -> [ if not rightDoor then SecurityOffice else CenterBackStage ]
-    | LeftDoor -> [ if not leftDoor then SecurityOffice else CenterBackStage ]
+    | BossOffice -> [ RightDoor ]
     | Vent -> [ SecurityOffice ]
-    | SecurityOffice -> [ SecurityOffice ]
+    | LeftStage -> [ LeftHall ]
 
 let getLocationDuration =
     function
