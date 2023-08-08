@@ -37,7 +37,7 @@ body {
 #camera-left {
     position: absolute;
     top: calc(50vh - 120px);
-    left: calc(0 + 30px);
+    left: 0;
     height: 240px;
     width: 60px;
 }
@@ -45,7 +45,7 @@ body {
 #light-left {
     position: absolute;
     top: calc(50vh + 140px);
-    left: calc(0 + 30px);
+    left: 0;
     height: 120px;
     width: 60px;
 }
@@ -72,4 +72,16 @@ body {
     top: calc(100vh - 60px);
     width: 480px;
     height: 60px;
+}
+
+#menu {
+    position: absolute;
+    left: calc(50vw - 30px);
+    top: calc(50vh - 240px);
+    width: 480px;
+    height: 60px;
+}
+
+#game{
+    visibility: hidden;
 }
