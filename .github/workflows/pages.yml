@@ -37,7 +37,7 @@ jobs:
 
       - name: Mkdir build
         run: mkdir build
-
+        
       - name: Build
         run: dotnet fable src --outDir build
 
@@ -49,7 +49,7 @@ jobs:
 
       - name: Move Data
         run: cp -r src/Data build/Data
-
+        
       - name: Artifact
         uses: actions/upload-artifact@v3
         with:
