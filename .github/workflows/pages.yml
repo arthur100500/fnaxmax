@@ -1,0 +1,88 @@
+
+name: Pages
+
+on: [push, pull_request]
+
+
+jobs:
+  # Build job
+  build:
+    # At a minimum this job should upload artifacts using actions/upload-pages-artifact
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.100'
+
+      - name: Create tool manifest
+        run: dotnet new tool-manifest
+
+      - name: Download paket tool
+        run: dotnet tool install paket
+
+      - name: Download fable
+        run: dotnet tool install fable
+
+      - name: Restore Tools
+        run: dotnet tool restore
+
+      - name: Paket Restore
+        run: dotnet paket restore
+
+      - name: Mkdir build
+        run: mkdir build
+
+      - name: Build
+        run: dotnet fable src --outDir build
+
+      - name: Move HTML
+        run: cp src/index.html build/index.html
+
+      - name: Move CSS
+        run: cp src/index.css build/index.css
+
+      - name: Move Data
+        run: cp -r src/Data build/Data
+
+      - name: Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: page
+          path: build
+          if-no-files-found: error
+
+
+  # Deploy job
+  deploy:
+    # Add a dependency to the build job
+    needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: page
+          path: .
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: .
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2 # or the latest "vX.X.X" version tag for this action
