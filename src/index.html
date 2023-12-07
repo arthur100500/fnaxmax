@@ -2,22 +2,28 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="index.css" rel="stylesheet">
     <title>FNAX</title>
 </head>
 
 <body>
     <div id="root">
-        <canvas id="game-canvas"></canvas>
+        <div id="game">
+            <canvas id="game-canvas"></canvas>
+            <button class="control-button" id="camera-left"> ←</button>
+            <button class="control-button" id="camera-right"> →</button>
+            <button class="control-button" id="light-left"> 💡</button>
+            <button class="control-button" id="light-right"> 💡</button>
+            <button class="control-button" id="camera-up">Camera</button>
+            <script type="module" src="/Program.js"></script>
+        </div>
+        <div id="menu">
+            <canvas id="menu-canvas"></canvas>
+            <button class="control-button" id="start"> Start game (Night 1) </button>
+        </div>
     </div>
-    <button class="control-button" id="camera-left"> ← </button>
-    <button class="control-button" id="camera-right"> → </button>
-    <button class="control-button" id="light-left"> 💡 </button>
-    <button class="control-button" id="light-right"> 💡 </button>
-    <button class="control-button" id="camera-up">Camera</button>
-    <script type="module" src="/Program.js"></script>
 </body>
 
 </html>

@@ -35,15 +35,21 @@ jobs:
       - name: Paket Restore
         run: dotnet paket restore
 
+      - name: Mkdir build
+        run: mkdir build
+        
       - name: Build
         run: dotnet fable src --outDir build
 
       - name: Move HTML
-        run: cp src/sources/index.html build/index.html
+        run: cp src/index.html build/index.html
 
-      - name: Move HTML
-        run: cp src/sources/index.css build/index.css
+      - name: Move CSS
+        run: cp src/index.css build/index.css
 
+      - name: Move Data
+        run: cp -r src/Data build/Data
+        
       - name: Artifact
         uses: actions/upload-artifact@v3
         with:

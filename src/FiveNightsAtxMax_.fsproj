@@ -2,19 +2,31 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="Utils.fs" />
-    <Compile Include="Locations.fs" />
-    <Compile Include="Shaders.fs" />
-    <Compile Include="CameraState.fs" />
-    <Compile Include="Textures.fs" />
-    <Compile Include="Ai.fs" />
-    <Compile Include="Game.fs" />
-    <Compile Include="RenderBasics.fs" />
-    <Compile Include="Render.fs" />
+    <Folder Include="Data\" />
+    <Compile Include="Audio\Audio.fsi" />
+    <Compile Include="Audio\Audio.fs" />
+    <Compile Include="Render\Shaders.fs" />
+    <Compile Include="Render\Textures.fsi" />
+    <Compile Include="Render\Textures.fs" />
+    <Compile Include="Render\RenderBasics.fsi" />
+    <Compile Include="Render\RenderBasics.fs" />
+    <Compile Include="Render\Render.fsi" />
+    <Compile Include="Render\Render.fs" />
+    <Compile Include="Game\Locations.fs" />
+    <Compile Include="Game\CameraState.fs" />
+    <Compile Include="Game\Ai.fsi" />
+    <Compile Include="Game\Ai.fs" />
+    <Compile Include="Game\GameBasics.fs" />
+    <Compile Include="Game\GameRender.fs" />
+    <Compile Include="Game\Game.fsi" />
+    <Compile Include="Game\Game.fs" />
+    <Compile Include="Game\Start.fs" />
+    <Compile Include="Menu\Menu.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

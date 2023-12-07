@@ -1,4 +1,4 @@
-﻿module FiveNightsAtxMax_.Utils
+﻿module Utils
 
 let memoize fn =
   let cache = System.Collections.Generic.Dictionary<_,_>()
